@@ -1,23 +1,24 @@
 <?php
 
 // Get login data
-$xml=simplexml_load_file("login.xml");
+$xml=simplexml_load_file("login.xml"); //TODO why is this outside of class
+//TODO also you removed a validation
 
-//Check login data
+//Check login data //TODO this comment could be a function name
 
-if (!preg_match("/[a-zA-Z\d_.-]+/", $xml->user) or !preg_match("/[a-zA-Z_.-]+/", $xml->password)){
-    die("Error: Cannot create object");
+if (!preg_match("/[a-zA-Z\d_.-]+/", $xml->user) or !preg_match("/[a-zA-Z_.-]+/", $xml->password)){ //TODO are you checking it exists, or the format
+    die("Error: Cannot create object"); //TODO what object?
 };
 
-class DatabaseConnection {
+class DatabaseConnection { //TODO Why not use file for each class
 
-    // Declare variables
+    // Declare variables //TODO not really relevant
     private $servername;
     private $username;
     private $password;
     private $database;
 
-    function __construct($servername, $username, $password, $database) {
+    function __construct($servername, $username, $password, $database) { //TODO access modifier missing
         $this->servername = $servername;
         $this->username = $username;
         $this->password = $password;
@@ -26,17 +27,17 @@ class DatabaseConnection {
 
     // Create connection
     protected function connect() {
-        $conn = new mysqli($this->servername, $this->username, $this->password, $this->database);
+        $conn = new mysqli($this->servername, $this->username, $this->password, $this->database); //TODO no need to abbreviate 'connection' to 'conn'
 
         // Check connection
         if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+            die("Connection failed: " . $conn->connect_error); //TODO die could be dangerous, exceptions are safer
         }
         return $conn;
     }
 }
 
-class CustomerNames extends DatabaseConnection {
+class CustomerNames extends DatabaseConnection { //TODO why extend?
 
     // Select data
     public function getCustomers() {
@@ -46,7 +47,7 @@ class CustomerNames extends DatabaseConnection {
         // Print data
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                echo "Customer: " . $row["customerName"] . "\n";
+                echo "Customer: " . $row["customerName"] . "\n"; //TODO did you know variables can be embedded instead of cutting open a string?
             }
         } else {
             echo "0 results";
@@ -54,5 +55,7 @@ class CustomerNames extends DatabaseConnection {
     }
 }
 
-$customers = new CustomerNames("localhost", $xml->user, $xml->password, "classicmodels");
+$customers = new CustomerNames("localhost", $xml->user, $xml->password, "classicmodels"); //TODO hardcoded values? Better use constants,, or even better, config files
 echo $customers->getCustomers();
+
+//TODO one git commit for 2 changes make sit it difficult to analyse history
