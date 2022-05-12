@@ -49,7 +49,7 @@ class CustomerNames extends DatabaseConnection { //TODO why extend?
         // Print data
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                echo "Customer: " . $row["customerName"] . "\n"; //TODO did you know variables can be embedded instead of cutting open a string?
+                echo "Customer: {$row["customerName"]}\n";
             }
         } else {
             echo "0 results";
