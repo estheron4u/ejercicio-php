@@ -3,13 +3,13 @@
 include('config.php');
 
 class GetLoginData {
-    public $xml;
+    protected $xml;
 
     public function __construct(){
         $this->xml = simplexml_load_file("login.xml") or die("Error: Cannot create object");
     }
 
-    protected function checkLoginData(){
+    public function checkLoginData(){
         if (!$this->xml->user){
             die("Error: User field doesn't exist");
         }
@@ -19,9 +19,10 @@ class GetLoginData {
         if (!preg_match("/[a-zA-Z\d_.-]+/", $this->xml->user)){
             die("Error: User is not correct");
         }
-        if (!preg_match("/[a-zA-Z\d_.-]+/", $this->xml->password)) {
+        if (!preg_match("/[a-zA-Z_.-]+/", $this->xml->password)) {
             die("Error: Password is not correct");
         }
+        return $this->xml;
     }
 };
 
@@ -38,31 +39,23 @@ class DatabaseConnection { //TODO Why not use file for each class
         $this->logindata = new GetLoginData;
 
         $this->servername = $servername;
-        $this->username = $this->logindata->xml->user;
-        $this->password = $this->logindata->xml->password;
+        $this->username = $this->logindata->checkLoginData()->user;
+        $this->password = $this->logindata->checkLoginData()->password;
         $this->database = $database;
     }
 
-    // Create connection
-    protected function connect() {
+    protected function connectToDatabase() {
         $connection = new mysqli($this->servername, $this->username, $this->password, $this->database);
 
-        // Check connection
         if ($connection->connect_error) {
             die("Connection failed: " . $connection->connect_error); //TODO die could be dangerous, exceptions are safer
         }
         return $connection;
     }
-}
-
-class CustomerNames extends DatabaseConnection { //TODO why extend?
-
-    // Select data
     public function getCustomers() {
         $sql = "SELECT customerName FROM customers";
-        $result = $this->connect()->query($sql);
+        $result = $this->connectToDatabase()->query($sql);
 
-        // Print data
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 echo "Customer: {$row["customerName"]}\n";
@@ -73,6 +66,7 @@ class CustomerNames extends DatabaseConnection { //TODO why extend?
     }
 }
 
-$customers = new CustomerNames($host, $database);
+
+$customers = new DatabaseConnection($host, $database);
 echo $customers->getCustomers();
 
