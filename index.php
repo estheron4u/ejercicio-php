@@ -1,5 +1,7 @@
 <?php
 
+include('config.php');
+
 // Get login data
 $xml=simplexml_load_file("login.xml"); //TODO why is this outside of class
 //TODO also you removed a validation
@@ -55,7 +57,7 @@ class CustomerNames extends DatabaseConnection { //TODO why extend?
     }
 }
 
-$customers = new CustomerNames("localhost", $xml->user, $xml->password, "classicmodels"); //TODO hardcoded values? Better use constants,, or even better, config files
+$customers = new CustomerNames($host, $xml->user, $xml->password, $database);
 echo $customers->getCustomers();
 
 //TODO one git commit for 2 changes make sit it difficult to analyse history
