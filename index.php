@@ -8,12 +8,16 @@ class GetLoginData {
     public $password;
 
     public function __construct(){
-        $this->xml = simplexml_load_file("login.xml") or die("Error: Cannot create object");
         try {
+            $this->xml = simplexml_load_file("login.xml");
             $this->username = $this->checkLoginData()->user;
             $this->password = $this->checkLoginData()->password;
         } catch (Exception $e) {
             echo 'Exception: ',  $e->getMessage(), "\n";
+        }
+
+        if(!$this->xml){
+            throw new Exception("Cannot create object");
         }
     }
 
@@ -49,10 +53,14 @@ class DatabaseConnection { //TODO Why not use file for each class
     }
 
     protected function connectToDatabase() {
-        $connection = new mysqli($this->servername, $this->logindata->username, $this->logindata->password, $this->database);
+        try {
+            $connection = new mysqli($this->servername, $this->logindata->username, $this->logindata->password, $this->database);
+        } catch (Exception $e) {
+            echo 'Exception: ',  $e->getMessage(), "\n";
+        }
 
         if ($connection->connect_error) {
-            die("Connection failed: " . $connection->connect_error); //TODO die could be dangerous, exceptions are safer
+            throw new Exception("Connection failed: " . $connection->connect_error);
         }
         return $connection;
     }
@@ -69,7 +77,6 @@ class DatabaseConnection { //TODO Why not use file for each class
         }
     }
 }
-
 
 $customers = new DatabaseConnection($host, $database);
 echo $customers->getCustomers();
