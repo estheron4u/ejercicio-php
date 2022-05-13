@@ -11,7 +11,7 @@ class GetDatabaseData {
         $this->database = $database;
     }
 
-    protected function connectToDatabase() {
+    private function connectToDatabase() {
         try {
             $connection = new mysqli($this->servername, $this->logindata->username, $this->logindata->password, $this->database);
         } catch (Exception $e) {

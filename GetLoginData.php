@@ -1,7 +1,7 @@
 <?php
 
 class GetLoginData {
-    protected $xml;
+    private $xml;
     public $username;
     public $password;
 
