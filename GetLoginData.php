@@ -26,10 +26,10 @@ class GetLoginData {
         if (!$this->xml->password){
             throw new Exception("Password field doesn't exist");
         }
-        if (!preg_match("/[a-zA-Z\d_.-]+/", $this->xml->user)){
+        if (!preg_match("/^[a-zA-Z0-9]\w{1,14}$/", $this->xml->user)){
             throw new Exception("User is not correct");
         }
-        if (!preg_match("/[a-zA-Z_.-]+/", $this->xml->password)) {
+        if (!preg_match("/^[a-zA-Z0-9]\w{1,14}$/", $this->xml->password)) {
             throw new Exception("Password is not correct");
         }
         return $this->xml;
