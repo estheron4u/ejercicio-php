@@ -6,6 +6,7 @@ $xml=simplexml_load_file("login.xml") or die("Error: Cannot create object");
 // Declare variables
 $servername = "localhost";
 $username = $xml->user;
+//upsss, this commit will probably mess your merge
 $password = $xml->password;
 $database = "classicmodels";
 
