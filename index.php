@@ -24,6 +24,7 @@ $result = $conn->query($sql);
 
 // Print data
 if ($result->num_rows > 0) {
+    //oh no, he did it again
     while($row = $result->fetch_assoc()) {
         echo "Customer: " . $row["customerName"] . "\n";
     }
