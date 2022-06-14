@@ -2,17 +2,27 @@
 include_once('DatabaseLoginLoader.php');
 
 class DatabaseConnector {
+    private static $instance = null;
 
-    public static function connectToDatabase() {
+    private $logindata;
+    private $server;
+    private $username;
+    private $password;
+    private $database;
+    private $connection;
 
-        $logindata = new DatabaseLoginLoader();
-        $server = $logindata->getServer();
-        $username = $logindata->getUsername();
-        $password = $logindata->getPassword();
-        $database = $logindata->getDatabase();
+    private function __construct(){
+        $this->logindata = new DatabaseLoginLoader();
+        $this->server = $this->logindata->getServer();
+        $this->username = $this->logindata->getUsername();
+        $this->password = $this->logindata->getPassword();
+        $this->database = $this->logindata->getDatabase();
+        $this->connection = $this->connectToDatabase();
+    }
 
+    private function connectToDatabase(){
         try {
-            $connection = new mysqli($server, $username, $password, $database);
+            $connection = new mysqli($this->server, $this->username, $this->password, $this->database);
             if ($connection->connect_error) {
                 throw new Exception("Connection failed: " . $connection->connect_error);
             }
@@ -21,5 +31,17 @@ class DatabaseConnector {
             echo 'Exception: ',  $e->getMessage(), "\n";
             return null;
         }
+    }
+
+    public function getConnection(){
+        return $this->connection;
+    }
+
+    public static function getInstance(){
+        if (self::$instance == null){
+            self::$instance = new DatabaseConnector();
+        }
+
+        return self::$instance;
     }
 }

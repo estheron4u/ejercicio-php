@@ -10,9 +10,10 @@ class DatabaseDataPrinter{
         $this->sql= "SELECT $column FROM $table";
     }
 
-   private function askQuery(){
+    private function askQuery(){
         try {
-            $result = DatabaseConnector::connectToDatabase()->query($this->sql);
+            $instance = DatabaseConnector::getInstance();
+            $result = $instance->getConnection()->query($this->sql);
             if (!$result){
                 throw new Exception();
             }
