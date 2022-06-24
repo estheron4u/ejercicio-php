@@ -18,7 +18,7 @@ class DatabaseDataPrinter{
             }
         } catch (Exception $e) {
             echo 'Exception: ',  $e->getMessage(), "\n";
-            die(); //TODO I would avoid die from now on. Let the Exception rise through the code and manage it at the highest level
+            die(); //TODO I would avoid die from now on. Let the Exception rise through the code and manage it at the highest level - De poner un die() que sea en el index
         }
 
         return $result;
@@ -31,7 +31,7 @@ class DatabaseDataPrinter{
             while($row = $result->fetch_assoc()) {
                 echo "$this->column: {$row[$this->column]}\n";
             }
-        } else { //TODO good quick return candidate
+        } else { //TODO good quick return candidate - Primero la parte negativa y luego la positiva. Osea que primero el 0 results vaya
             echo "0 results";
         }
     }

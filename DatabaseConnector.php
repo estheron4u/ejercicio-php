@@ -17,7 +17,7 @@ class DatabaseConnector {
                 throw new Exception("Connection failed: " . $connection->connect_error);
             }
             return $connection;
-        } catch (Exception $e) { //TODO locally catching a single exception is not better than managing it on the original line
+        } catch (Exception $e) { //TODO locally catching a single exception is not better than managing it on the original line - Hacer throws fuera de los try catch y hacer el try solo al final (osea en el index)
             echo 'Exception: ',  $e->getMessage(), "\n";
             return null;
         }
