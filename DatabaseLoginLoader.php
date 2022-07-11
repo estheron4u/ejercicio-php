@@ -39,32 +39,33 @@ class DatabaseLoginLoader {
         return $xml;
     }
 
+
     /**
-     * @return SimpleXMLElement //TODO why not declare it at PHP level? And why not a string? - Declararlo a nivel de php es poner :string o :boolean o lo que sea a nivel de declarar la funcion. También hay que castearlo a string, es un tipo más correcto que un simplexmlelement
+     * @return string
      */
-    public function getServer(){
-        return $this->server;
+    public function getServer() : string {
+        return $this->server->__toString();
     }
 
     /**
-     * @return SimpleXMLElement //TODO why not declare it at PHP level? And why not a string?
+     * @return string
      */
-    public function getUsername() {
-        return $this->username;
+    public function getUsername() : string{
+        return $this->username->__toString();
     }
 
     /**
-     * @return SimpleXMLElement //TODO why not declare it at PHP level? And why not a string?
+     * @return string
      */
-    public function getPassword() {
-        return $this->password;
+    public function getPassword() : string{
+        return $this->password->__toString();
     }
 
     /**
-     * @return SimpleXMLElement //TODO why not declare it at PHP level? And why not a string?
+     * @return string
      */
-    public function getDatabase(){
-        return $this->database;
+    public function getDatabase() : string{
+        return $this->database->__toString();
     }
 
 }

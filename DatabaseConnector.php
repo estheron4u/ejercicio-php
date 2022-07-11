@@ -12,7 +12,7 @@ class DatabaseConnector {
         $database = $logindata->getDatabase();
 
         try {
-            $connection = new mysqli($server, $username, $password, $database);
+            $connection = new mysqli($server, $username, $password, $database); // Comprobar si ya se ha realizado una conexión a la base de datos antes de realizar una nueva conexión
             if ($connection->connect_error) {
                 throw new Exception("Connection failed: " . $connection->connect_error);
             }
