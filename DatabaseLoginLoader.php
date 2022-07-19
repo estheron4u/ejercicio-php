@@ -1,6 +1,7 @@
 <?php
 
 class DatabaseLoginLoader {
+    const LOGIN_DATA = "login.xml";
     private $xml;
     private $server;
     private $username;
@@ -8,7 +9,7 @@ class DatabaseLoginLoader {
     private $database;
 
     public function __construct(){
-        $this->xml = simplexml_load_file("login.xml");
+        $this->xml = simplexml_load_file(self::LOGIN_DATA);
         $this->server = $this->xml->server;
         $this->username = $this->xml->user;
         $this->password = $this->xml->password;
