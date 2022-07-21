@@ -9,11 +9,11 @@ class DatabaseDataPrinter{
         $result = $connection->connectToDatabase()->query(self::CUSTOMER_NAMES_QUERY);
 
         if ($result->num_rows <= 0) {
-            echo "0 results"; //TODO quick return candidate
-        } else {
-            while($row = $result->fetch_assoc()) {
-                echo "Customer: {$row['customerName']}\n";
-            }
+            echo "0 results";
+            return;
+        }
+        while($row = $result->fetch_assoc()) {
+            echo "Customer: {$row['customerName']}\n";
         }
     }
 
