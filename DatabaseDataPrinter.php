@@ -4,14 +4,12 @@ include_once('DatabaseConnector.php');
 
 class DatabaseDataPrinter
 {
-
     /**
      * @throws Exception
      */
-    public function printCustomerNames()
+    public function printCustomerNames($data)
     {
-        $connection = new DatabaseConnector();
-        $customerNames = $connection->getCustomerNames();
+        $customerNames = $data;
 
         if (count($customerNames) <= 0) {
             echo "0 results";
@@ -22,5 +20,4 @@ class DatabaseDataPrinter
             echo "Customer: {$customer['customerName']}\n";
         }
     }
-
 }

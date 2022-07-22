@@ -1,9 +1,10 @@
 <?php
-include_once('DatabaseDataPrinter.php');
 
-$customers = new DatabaseDataPrinter();
+include_once('Runner.php');
+
+$customers = new Runner();
 try {
-    $customers->printCustomerNames();
-} catch (Exception $e){
-    echo 'Exception: ',  $e->getMessage();
+    $customers->run();
+} catch (Exception $e) {
+    echo 'Exception: ', $e->getMessage();
 }

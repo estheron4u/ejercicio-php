@@ -4,22 +4,19 @@ include_once('DatabaseLoginLoader.php');
 
 class DatabaseConnector
 {
-
     private $connection;
-//    const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
+    const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
 
     /**
+     * @param $server
+     * @param $username
+     * @param $password
+     * @param $database
      * @return mysqli
      * @throws Exception
      */
-    public function connectToDatabase(): mysqli
+    public function connectToDatabase($server, $username, $password, $database): mysqli
     {
-        $logindata = new DatabaseLoginLoader();
-        $server = $logindata->getServer();
-        $username = $logindata->getUsername();
-        $password = $logindata->getPassword();
-        $database = $logindata->getDatabase();
-
         if ($this->connection === null) {
             $this->connection = new mysqli($server, $username, $password, $database);
         }
@@ -30,12 +27,18 @@ class DatabaseConnector
     }
 
     /**
+     * @param $server
+     * @param $username
+     * @param $password
+     * @param $database
      * @return array
      * @throws Exception
      */
-    public function getCustomerNames(): array
+    public function getCustomerNames($server, $username, $password, $database): array
     {
-        $result = $this->connectToDatabase()->query("SELECT customerName FROM customers");
+        $result = $this->connectToDatabase($server, $username, $password, $database)->query(
+            self::CUSTOMER_NAMES_QUERY
+        );
         $customerNames = [];
         while ($row = $result->fetch_assoc()) {
             $customerNames[] = $row;
