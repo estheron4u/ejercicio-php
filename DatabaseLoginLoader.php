@@ -1,72 +1,77 @@
 <?php
 
-class DatabaseLoginLoader {
+class DatabaseLoginLoader
+{
     const LOGIN_DATA = "login.xml";
-    private $xml;
-    private $server;
-    private $username;
-    private $password;
-    private $database;
 
-    public function __construct(){
-        $this->xml = simplexml_load_file(self::LOGIN_DATA); //TODO no need to store $this->xml
-        $this->server = $this->xml->server;
-        $this->username = $this->xml->user;
-        $this->password = $this->xml->password;
-        $this->database = $this->xml->database;
+    /**
+     * @throws Exception
+     */
+    private function getLoginData()
+    {
+        $xml = simplexml_load_file(self::LOGIN_DATA);
+        if (!$xml) {
+            throw new Exception("Cannot load login data file");
+        }
+        return $xml;
     }
 
     /**
      * @return string
      * @throws Exception
      */
-    public function getServer() : string {
-        if(!$this->xml){
-            throw new Exception("Cannot load login data file");
+    public function getServer(): string
+    {
+        if (!$this->getLoginData()->server) {
+            throw new Exception("Server field doesn't exist in login data file");
         }
-        return $this->server->__toString(); //TODO this is the same as (string)$this->server, which is a more commonly known syntax
+        $server = $this->getLoginData()->server;
+        return (string)$server;
     }
 
     /**
      * @return string
      * @throws Exception
      */
-    public function getUsername() : string{ //TODO PSR...
-        if(!$this->xml){ //TODO no need to check $this->xml, you already have $this->username. This validations would probably go with the $this->server population in the construct
-            throw new Exception("Cannot load login data file");
-        }
-        if (!$this->xml->user){
+    public function getUsername(): string
+    {
+        if (!$this->getLoginData()->user) {
             throw new Exception("User field doesn't exist in login data file");
         }
-        if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $this->xml->user)){
+        if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $this->getLoginData()->user)) {
             throw new Exception("User format is not correct in login data file");
         }
-        return $this->username->__toString();
+        $username = $this->getLoginData()->user;
+        return (string)$username;
     }
 
     /**
      * @return string
      * @throws Exception
      */
-    public function getPassword() : string{
-        if (!$this->xml->password){
+    public function getPassword(): string
+    {
+        if (!$this->getLoginData()->password) {
             throw new Exception("Password field doesn't exist in login data file");
         }
-        if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $this->xml->password)) {
+        if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $this->getLoginData()->password)) {
             throw new Exception("Password format is not correct in login data file");
         }
-        return $this->password->__toString();
+        $password = $this->getLoginData()->password;
+        return (string)$password;
     }
 
     /**
      * @return string
      * @throws Exception
      */
-    public function getDatabase() : string{
-        if(!$this->xml){
-            throw new Exception("Cannot load login data file");
+    public function getDatabase(): string
+    {
+        if (!$this->getLoginData()->database) {
+            throw new Exception("Database field doesn't exist in login data file");
         }
-        return $this->database->__toString();
+        $database = $this->getLoginData()->database;
+        return (string)$database;
     }
 
 }
