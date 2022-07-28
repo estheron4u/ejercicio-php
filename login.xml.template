@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <document>
-    <user>changeMe</user>
-    <password>changeMe</password>
+    <server>ChangeMe</server>
+    <user>ChangeMe</user>
+    <password>ChangeMe</password>
+    <database>ChangeMe</database>
 </document>
 
 <!-- Fill this template to access the database -->
