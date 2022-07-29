@@ -6,6 +6,7 @@ class DatabaseConnector
 {
     private $connection;
     const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
+//    const CUSTOMER_NAMES_BY_CITY_QUERY = "SELECT customerName FROM customers WHERE city='NYC'";
 
     /**
      * @param $server
@@ -38,6 +39,28 @@ class DatabaseConnector
     {
         $result = $this->connectToDatabase($server, $username, $password, $database)->query(
             self::CUSTOMER_NAMES_QUERY
+        );
+        $customerNames = [];
+        while ($row = $result->fetch_assoc()) {
+            $customerNames[] = $row;
+        }
+        return $customerNames;
+    }
+
+    /**
+     * @param $server
+     * @param $username
+     * @param $password
+     * @param $database
+     * @param $city
+     * @return array
+     * @throws Exception
+     */
+    public function getCustomerNamesByCity($server, $username, $password, $database, $city): array
+    {
+        $query = self::CUSTOMER_NAMES_QUERY . " WHERE city='$city'";
+        $result = $this->connectToDatabase($server, $username, $password, $database)->query(
+            $query
         );
         $customerNames = [];
         while ($row = $result->fetch_assoc()) {
