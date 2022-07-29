@@ -6,7 +6,6 @@ class DatabaseConnector
 {
     private $connection;
     const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
-//    const CUSTOMER_NAMES_BY_CITY_QUERY = "SELECT customerName FROM customers WHERE city='NYC'";
 
     /**
      * @param $server
