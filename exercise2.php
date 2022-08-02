@@ -2,9 +2,9 @@
 
 include_once('Runner.php');
 
-$customers = new Runner();
+$customersByCity = new Runner();
 try {
-    $customers->runCustomers();
+    $customersByCity->runCustomersByCity();
 } catch (Exception $e) {
     echo 'Exception: ', $e->getMessage();
 }
