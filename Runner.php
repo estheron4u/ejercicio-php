@@ -13,10 +13,10 @@ class Runner
         $server = $logindata->getServer();
         $username = $logindata->getUsername();
         $password = $logindata->getPassword();
-        $database = $logindata->getDatabase();
+        $database = $logindata->getDatabase();//TODO you have already loaded the XML 8 times by the time you arrive here
 
         $connection = new DatabaseConnector();
-        $data = $connection->getCustomerNames($server, $username, $password, $database);
+        $data = $connection->getCustomerNames($server, $username, $password, $database); //TODO data applies to almost any variable, try to be more specific
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($data);
@@ -28,10 +28,10 @@ class Runner
         $server = $logindata->getServer();
         $username = $logindata->getUsername();
         $password = $logindata->getPassword();
-        $database = $logindata->getDatabase();
+        $database = $logindata->getDatabase();// TODO I see a lot of duplicated code here
 
         $input = new TerminalReader();
-        $city = $input->readTerminal('City: ');
+        $city = $input->readTerminal('City: '); //TODO not very explicit question, right? "City: Yes, please, thank you"
 
         $connection = new DatabaseConnector();
         $data = $connection->getCustomerNamesByCity($server, $username, $password, $database, $city);
