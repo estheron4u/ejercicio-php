@@ -54,8 +54,8 @@ class DatabaseLoginLoader
         if (!$this->getLoginData()->password) {
             throw new Exception("Password field doesn't exist in login data file");
         }
-        if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $this->getLoginData()->password)) {
-            throw new Exception("Password format is not correct in login data file"); //TODO my password has spaces and it fails here :sad:
+        if (!preg_match("/^[a-zA-Z\d\s]{1,14}$/", $this->getLoginData()->password)) {
+            throw new Exception("Password format is not correct in login data file");
         }
         $password = $this->getLoginData()->password;
         return (string)$password;
