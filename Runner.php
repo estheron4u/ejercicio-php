@@ -31,7 +31,7 @@ class Runner
         $database = $logindata->getDatabase();// TODO I see a lot of duplicated code here
 
         $input = new TerminalReader();
-        $city = $input->readTerminal('City: '); //TODO not very explicit question, right? "City: Yes, please, thank you"
+        $city = $input->readTerminal('Insert name of the city you want to view customers from: '); 
 
         $connection = new DatabaseConnector();
         $data = $connection->getCustomerNamesByCity($server, $username, $password, $database, $city);
