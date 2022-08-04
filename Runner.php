@@ -13,7 +13,7 @@ class Runner
      * @return DatabaseConnector
      * @throws Exception
      */
-    private function loadConnector(): DatabaseConnector
+    private function getConnector(): DatabaseConnector
     {
         if ($this->connector === null) {
             $logindata = new DatabaseLoginLoader();
@@ -33,7 +33,7 @@ class Runner
      */
     public function runCustomers()
     {
-        $connector = $this->loadConnector();
+        $connector = $this->getConnector();
         $customerNames = $connector->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
@@ -48,7 +48,7 @@ class Runner
         $input = new TerminalReader();
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
-        $connector = $this->loadConnector();
+        $connector = $this->getConnector();
         $customerNames = $connector->getCustomerNamesByCity($city);
 
         $customers = new DatabaseDataPrinter();
