@@ -4,8 +4,8 @@ include_once('DatabaseLoginLoader.php');
 
 class DatabaseConnector
 {
+    private const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
     private $connection;
-    const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers"; // TODO access modifier
 
     /**
      * @param $server
