@@ -7,36 +7,64 @@ include_once('TerminalReader.php');
 
 class Runner
 {
-    public function runCustomers()
+    private $server;
+    private $username;
+    private $password;
+    private $database;
+
+    private $connection;
+
+    /**
+     * Loads a database connection. Executed only if $connection is empty
+     * @return void
+     * @throws Exception
+     */
+    private function loadConnection()
     {
         $logindata = new DatabaseLoginLoader();
-        $server = $logindata->getServer();
-        $username = $logindata->getUsername();
-        $password = $logindata->getPassword();
-        $database = $logindata->getDatabase();//TODO you have already loaded the XML 8 times by the time you arrive here
+        $this->server = $logindata->getServer();
+        $this->username = $logindata->getUsername();
+        $this->password = $logindata->getPassword();
+        $this->database = $logindata->getDatabase();
 
-        $connection = new DatabaseConnector();
-        $data = $connection->getCustomerNames($server, $username, $password, $database); //TODO data applies to almost any variable, try to be more specific
+        $this->connection = new DatabaseConnector();
+    }
+
+    public function runCustomers()
+    {
+        if ($this->connection === null) {
+            $this->loadConnection();
+        }
+
+        $customerNames = $this->connection->getCustomerNames(
+            $this->server,
+            $this->username,
+            $this->password,
+            $this->database
+        );
 
         $customers = new DatabaseDataPrinter();
-        $customers->printCustomerNames($data);
+        $customers->printCustomerNames($customerNames);
     }
 
     public function runCustomersByCity()
     {
-        $logindata = new DatabaseLoginLoader();
-        $server = $logindata->getServer();
-        $username = $logindata->getUsername();
-        $password = $logindata->getPassword();
-        $database = $logindata->getDatabase();// TODO I see a lot of duplicated code here
+        if ($this->connection === null) {
+            $this->loadConnection();
+        }
 
         $input = new TerminalReader();
-        $city = $input->readTerminal('Insert name of the city you want to view customers from: '); 
+        $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
-        $connection = new DatabaseConnector();
-        $data = $connection->getCustomerNamesByCity($server, $username, $password, $database, $city);
+        $customerNames = $this->connection->getCustomerNamesByCity(
+            $this->server,
+            $this->username,
+            $this->password,
+            $this->database,
+            $city
+        );
 
         $customers = new DatabaseDataPrinter();
-        $customers->printCustomerNames($data);
+        $customers->printCustomerNames($customerNames);
     }
 }
