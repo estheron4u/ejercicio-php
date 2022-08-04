@@ -5,17 +5,21 @@ include_once('DatabaseConnector.php');
 class DatabaseDataPrinter
 {
     /**
+     * array column key must be 'customerName'
+     * @param array $customerNames
      * @throws Exception
      */
-    public function printCustomerNames($data)
+    public function printCustomerNames(array $customerNames)
     {
-        $customerNames = $data;
         if (count($customerNames) <= 0) {
             echo "0 results";
             return;
         }
+        if(count(array_column($customerNames,'customerName')) <= 0){
+            throw new Exception("Wrong column key, it must be 'customerName'");
+        }
         foreach ($customerNames as $customer) {
-            echo "Customer: {$customer['customerName']}\n"; //TODO if 'customerName' does not exist, it will fail. You should check its existence before accessing it. You could also declare the expected structure in the PHPDoc
+            echo "Customer: {$customer['customerName']}\n";
         }
     }
 }
