@@ -54,9 +54,12 @@ class DatabaseConnector
      */
     public function getCustomerNamesByCity($city): array
     {
-        $query = self::CUSTOMER_NAMES_QUERY . " WHERE city='$city'"; //FIXME this is vulnerable to SQL injection. Never trust user input and always use prepared inputs
+        $query = self::CUSTOMER_NAMES_QUERY . " WHERE city = ?";
         $connection = $this->getDatabaseConnection();
-        $result = $connection->query($query);
+        $preparedStatement = $connection->prepare($query);
+        $preparedStatement->bind_param('s', $city);
+        $preparedStatement->execute();
+        $result = $preparedStatement->get_result();
         $customerNames = [];
         while ($row = $result->fetch_assoc()) {
             $customerNames[] = $row;
