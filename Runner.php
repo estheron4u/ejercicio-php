@@ -7,62 +7,49 @@ include_once('TerminalReader.php');
 
 class Runner
 {
-    private $server;
-    private $username;
-    private $password;
-    private $database;
-
-    private $connection;
+    private $connector;
 
     /**
-     * Loads a database connection. Executed only if $connection is empty
-     * @return void
+     * @return DatabaseConnector
      * @throws Exception
      */
-    private function loadConnection()
+    private function loadConnector(): DatabaseConnector
     {
-        $logindata = new DatabaseLoginLoader();
-        $this->server = $logindata->getServer();
-        $this->username = $logindata->getUsername();
-        $this->password = $logindata->getPassword();
-        $this->database = $logindata->getDatabase();
+        if ($this->connector === null) {
+            $logindata = new DatabaseLoginLoader();
+            $server = $logindata->getServer();
+            $username = $logindata->getUsername();
+            $password = $logindata->getPassword();
+            $database = $logindata->getDatabase();
 
-        $this->connection = new DatabaseConnector();
-    }
-
-    public function runCustomers()
-    {
-        if ($this->connection === null) {
-            $this->loadConnection();
+            $this->connector = new DatabaseConnector($server, $username, $password, $database);
         }
 
-        $customerNames = $this->connection->getCustomerNames(
-            $this->server,
-            $this->username,
-            $this->password,
-            $this->database
-        );
+        return $this->connector;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function runCustomers()
+    {
+        $connector = $this->loadConnector();
+        $customerNames = $connector->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
     }
 
+    /**
+     * @throws Exception
+     */
     public function runCustomersByCity()
     {
-        if ($this->connection === null) {
-            $this->loadConnection();
-        }
-
         $input = new TerminalReader();
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
-        $customerNames = $this->connection->getCustomerNamesByCity(
-            $this->server,
-            $this->username,
-            $this->password,
-            $this->database,
-            $city
-        );
+        $connector = $this->loadConnector();
+        $customerNames = $connector->getCustomerNamesByCity($city);
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
