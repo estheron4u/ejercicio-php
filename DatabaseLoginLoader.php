@@ -9,10 +9,9 @@ class DatabaseLoginLoader
     private $database;
 
     /**
-     * @return SimpleXMLElement
      * @throws Exception
      */
-    private function getLoginData()
+    private function getLoginData(): SimpleXMLElement
     {
         $xml = simplexml_load_file(self::LOGIN_DATA);
         if (!$xml) {
@@ -21,6 +20,9 @@ class DatabaseLoginLoader
         return $xml;
     }
 
+    /**
+     * @throws Exception
+     */
     public function loadLoginData()
     {
         $logindata = $this->getLoginData();
@@ -49,7 +51,6 @@ class DatabaseLoginLoader
     }
 
     /**
-     * @return string
      * @throws Exception
      */
     public function getServer(): string
@@ -61,7 +62,6 @@ class DatabaseLoginLoader
     }
 
     /**
-     * @return string
      * @throws Exception
      */
     public function getUsername(): string
@@ -73,7 +73,6 @@ class DatabaseLoginLoader
     }
 
     /**
-     * @return string
      * @throws Exception
      */
     public function getPassword(): string
@@ -85,7 +84,6 @@ class DatabaseLoginLoader
     }
 
     /**
-     * @return string
      * @throws Exception
      */
     public function getDatabase(): string

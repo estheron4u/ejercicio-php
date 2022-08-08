@@ -21,7 +21,6 @@ class DatabaseConnector
 
     /**
      * Only creates a new connection if $connection is empty
-     * @return mysqli
      * @throws Exception
      */
     public function getDatabaseConnection(): mysqli

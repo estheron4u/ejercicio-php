@@ -10,7 +10,6 @@ class Runner
     private $connector;
 
     /**
-     * @return DatabaseConnector
      * @throws Exception
      */
     private function getConnector(): DatabaseConnector
