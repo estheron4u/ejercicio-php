@@ -2,22 +2,34 @@
 
 class DatabaseLoginLoader
 {
-    const LOGIN_DATA = "login.xml";
     private $server;
     private $user;
     private $password;
     private $database;
+    private $loginfile;
+
+    public function __construct($loginfile)
+    {
+        $this->loginfile = $loginfile;
+    }
 
     /**
+     * Checks if login file is json or xml and returns its content
+     * @return mixed|SimpleXMLElement
      * @throws Exception
      */
-    private function getLoginData(): SimpleXMLElement
+    private function getLoginData()
     {
-        $xml = simplexml_load_file(self::LOGIN_DATA);
-        if (!$xml) {
-            throw new Exception("Cannot load login data file");
+        $decodedfile = file_get_contents($this->loginfile);
+        if (json_decode($decodedfile) === null) {
+            $xml = simplexml_load_file($this->loginfile);
+            if (!$xml) {
+                throw new Exception("Cannot load login data file");
+            }
+            return $xml;
+        } else {
+            return json_decode($decodedfile);
         }
-        return $xml;
     }
 
     /**
@@ -51,6 +63,7 @@ class DatabaseLoginLoader
     }
 
     /**
+     * @return string
      * @throws Exception
      */
     public function getServer(): string
@@ -62,6 +75,7 @@ class DatabaseLoginLoader
     }
 
     /**
+     * @return string
      * @throws Exception
      */
     public function getUsername(): string
@@ -73,6 +87,7 @@ class DatabaseLoginLoader
     }
 
     /**
+     * @return string
      * @throws Exception
      */
     public function getPassword(): string
@@ -84,6 +99,7 @@ class DatabaseLoginLoader
     }
 
     /**
+     * @return string
      * @throws Exception
      */
     public function getDatabase(): string
