@@ -18,7 +18,7 @@ class DatabaseLoginLoader
      * @return mixed|SimpleXMLElement
      * @throws Exception
      */
-    private function getLoginData()
+    private function getLoginData() //TODO good, but how about using a factory pattern to serve 2 services, each one with it's simplified getLoginData
     {
         $decodedfile = file_get_contents($this->loginfile);
         if (json_decode($decodedfile) === null) {
