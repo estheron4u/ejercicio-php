@@ -1,35 +1,18 @@
 <?php
 
+include_once 'DatabaseLoginLoaderFactory.php';
+
 class DatabaseLoginLoader
 {
     private $server;
     private $user;
     private $password;
     private $database;
-    private $loginfile;
+    private $serviceType;
 
-    public function __construct($loginfile)
+    public function __construct($serviceType)
     {
-        $this->loginfile = $loginfile;
-    }
-
-    /**
-     * Checks if login file is json or xml and returns its content
-     * @return mixed|SimpleXMLElement
-     * @throws Exception
-     */
-    private function getLoginData() //TODO good, but how about using a factory pattern to serve 2 services, each one with it's simplified getLoginData
-    {
-        $decodedfile = file_get_contents($this->loginfile);
-        if (json_decode($decodedfile) === null) {
-            $xml = simplexml_load_file($this->loginfile);
-            if (!$xml) {
-                throw new Exception("Cannot load login data file");
-            }
-            return $xml;
-        } else {
-            return json_decode($decodedfile);
-        }
+        $this->serviceType = $serviceType;
     }
 
     /**
@@ -37,7 +20,9 @@ class DatabaseLoginLoader
      */
     public function loadLoginData()
     {
-        $logindata = $this->getLoginData();
+        $logindata = new DatabaseLoginLoaderFactory();
+        $logindata = $logindata->getLoginLoaderService($this->serviceType);
+        $logindata = $logindata->getLoginData();
         if (!$logindata->server) {
             throw new Exception("Server field doesn't exist in login data file");
         }

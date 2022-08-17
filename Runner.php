@@ -12,10 +12,10 @@ class Runner
     /**
      * @throws Exception
      */
-    private function getConnector($loginfile): DatabaseConnector
+    private function getConnector($serviceType): DatabaseConnector
     {
         if ($this->connector === null) {
-            $logindata = new DatabaseLoginLoader($loginfile);
+            $logindata = new DatabaseLoginLoader($serviceType);
             $server = $logindata->getServer();
             $username = $logindata->getUsername();
             $password = $logindata->getPassword();
@@ -32,7 +32,7 @@ class Runner
      */
     public function runCustomers()
     {
-        $connector = $this->getConnector('login.xml');
+        $connector = $this->getConnector('xml');
         $customerNames = $connector->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
@@ -44,8 +44,7 @@ class Runner
      */
     public function runCustomersByCity()
     {
-
-        $connector = $this->getConnector('login.json');
+        $connector = $this->getConnector('json');
 
         $input = new TerminalReader();
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
