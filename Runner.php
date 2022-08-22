@@ -54,4 +54,14 @@ class Runner
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
     }
+
+    /**
+     * @throws Exception
+     */
+    public function runCustomersCsv()
+    {
+
+        $customers = new DatabaseDataPrinter();
+        $customers->printCustomerNamesCsv();
+    }
 }
