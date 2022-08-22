@@ -4,6 +4,7 @@ include_once('DatabaseLoginLoader.php');
 include_once('DatabaseConnector.php');
 include_once('DatabaseDataPrinter.php');
 include_once('TerminalReader.php');
+include_once('CSVDataLoader.php');
 
 class Runner
 {
@@ -60,8 +61,10 @@ class Runner
      */
     public function runCustomersCsv()
     {
+        $customerNames = new CSVDataLoader();
+        $customerNames = $customerNames->getCustomerNamesCsv();
 
         $customers = new DatabaseDataPrinter();
-        $customers->printCustomerNamesCsv();
+        $customers->printCustomerNames($customerNames);
     }
 }

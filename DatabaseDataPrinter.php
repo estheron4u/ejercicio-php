@@ -23,13 +23,4 @@ class DatabaseDataPrinter
         }
     }
 
-    public function printCustomerNamesCsv()
-    {
-        $file = fopen("customers.csv", "r");
-        while ($csv_line = fgetcsv($file, 1024)) {
-            list(, $column2) = $csv_line;
-            echo "Customer: $column2\n";
-        }
-        fclose($file);
-    }
 }
