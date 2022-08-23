@@ -4,7 +4,7 @@ include_once('DatabaseLoginLoader.php');
 
 class DatabaseConnector
 {
-    private const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
+//    private const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
     private $server;
     private $username;
     private $password;
@@ -33,36 +33,36 @@ class DatabaseConnector
         }
         return $this->connection;
     }
+//
+//    /**
+//     * @throws Exception
+//     */
+//    public function getCustomerNames(): array
+//    {
+//        $connection = $this->getDatabaseConnection();
+//        $result = $connection->query(self::CUSTOMER_NAMES_QUERY);
+//        $customerNames = [];
+//        while ($row = $result->fetch_assoc()) {
+//            $customerNames[] = $row;
+//        }
+//        return $customerNames;
+//    }
 
-    /**
-     * @throws Exception
-     */
-    public function getCustomerNames(): array
-    {
-        $connection = $this->getDatabaseConnection();
-        $result = $connection->query(self::CUSTOMER_NAMES_QUERY);
-        $customerNames = [];
-        while ($row = $result->fetch_assoc()) {
-            $customerNames[] = $row;
-        }
-        return $customerNames;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getCustomerNamesByCity($city): array
-    {
-        $query = self::CUSTOMER_NAMES_QUERY . " WHERE city = ?";
-        $connection = $this->getDatabaseConnection();
-        $preparedStatement = $connection->prepare($query);
-        $preparedStatement->bind_param('s', $city);
-        $preparedStatement->execute();
-        $result = $preparedStatement->get_result();
-        $customerNames = [];
-        while ($row = $result->fetch_assoc()) {
-            $customerNames[] = $row;
-        }
-        return $customerNames;
-    }
+//    /**
+//     * @throws Exception
+//     */
+//    public function getCustomerNamesByCity($city): array
+//    {
+//        $query = self::CUSTOMER_NAMES_QUERY . " WHERE city = ?";
+//        $connection = $this->getDatabaseConnection();
+//        $preparedStatement = $connection->prepare($query);
+//        $preparedStatement->bind_param('s', $city);
+//        $preparedStatement->execute();
+//        $result = $preparedStatement->get_result();
+//        $customerNames = [];
+//        while ($row = $result->fetch_assoc()) {
+//            $customerNames[] = $row;
+//        }
+//        return $customerNames;
+//    }
 }
