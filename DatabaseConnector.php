@@ -4,7 +4,7 @@ include_once('DatabaseLoginLoader.php');
 
 class DatabaseConnector
 {
-//    private const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
+//    private const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers"; //TODO - BAD PRACTICE: yuo have git to recover past code, no need to preserve it commented
     private $server;
     private $username;
     private $password;
@@ -33,6 +33,7 @@ class DatabaseConnector
         }
         return $this->connection;
     }
+    //TODO - BAD PRACTICE: yuo have git to recover past code, no need to preserve it commented
 //
 //    /**
 //     * @throws Exception

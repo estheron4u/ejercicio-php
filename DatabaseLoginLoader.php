@@ -20,7 +20,7 @@ class DatabaseLoginLoader
      */
     public function loadLoginData()
     {
-        $logindata = new DatabaseLoginLoaderFactory();
+        $logindata = new DatabaseLoginLoaderFactory(); //TODO - BAD PRACTICE: these 3 line suse the same variable, even if each one return a different type of variable (a factory, a service, and the loginData itself)
         $logindata = $logindata->getLoginLoaderService($this->serviceType);
         $logindata = $logindata->getLoginData();
         if (!$logindata->server) {
@@ -38,7 +38,7 @@ class DatabaseLoginLoader
         if (!preg_match("/^[a-zA-Z\d\s]{1,14}$/", $logindata->password)) {
             throw new Exception("Password format is not correct in login data file");
         }
-        if (!$logindata->database) {
+        if (!$logindata->database) { //TODO - SUGGESTION: You still get a single error per execution, why not store all errores on an array an the throw a single Exception?
             throw new Exception("Database field doesn't exist in login data file");
         }
         $this->server = $logindata->server;
