@@ -1,10 +1,12 @@
 <?php
 
-include_once('DatabaseLoginLoader.php');
-include_once('DatabaseConnector.php');
-include_once('DatabaseDataPrinter.php');
+use DatabaseLoginLoader\DatabaseLoginLoader;
+
+include_once('Database/DatabaseLoginLoader/DatabaseLoginLoader.php');
+include_once('Database/DatabaseConnector.php');
+include_once('Database/DatabaseDataPrinter.php');
 include_once('TerminalReader.php');
-include_once('DataLoaderFactory.php');
+include_once('DataLoader/DataLoaderFactory.php');
 
 class Runner
 {

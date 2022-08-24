@@ -1,6 +1,6 @@
 <?php
 
-include_once('DatabaseLoginLoader.php');
+include_once('DatabaseLoginLoader/DatabaseLoginLoader.php');
 
 class DatabaseConnector
 {

@@ -8,7 +8,7 @@ class DataLoaderCustomersByCityDatabase implements DataLoaderInterface
     private $connection;
     private $city;
 
-    public function __construct($connection,$city)
+    public function __construct($connection, $city)
     {
         $this->connection = $connection;
         $this->city = $city;

@@ -1,5 +1,7 @@
 <?php
 
+namespace DatabaseLoginLoader;
+
 include_once('DatabaseLoginLoaderXml.php');
 include_once('DatabaseLoginLoaderJson.php');
 

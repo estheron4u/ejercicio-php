@@ -1,5 +1,7 @@
 <?php
 
+namespace DatabaseLoginLoader;
+
 include_once 'DatabaseLoginLoaderFactory.php';
 
 class DatabaseLoginLoader
@@ -42,7 +44,7 @@ class DatabaseLoginLoader
         if (!$logindata->database) {
             $exceptionmessage[] = "Database field doesn't exist in login data file";
         }
-        if(count($exceptionmessage) > 0){
+        if (count($exceptionmessage) > 0) {
             $exceptionmessage = implode(",\n", $exceptionmessage);
             throw new Exception($exceptionmessage);
         }
