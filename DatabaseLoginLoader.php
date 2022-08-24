@@ -23,23 +23,28 @@ class DatabaseLoginLoader
         $loginloader = new DatabaseLoginLoaderFactory();
         $loginservice = $loginloader->getLoginLoaderService($this->serviceType);
         $logindata = $loginservice->getLoginData();
+        $exceptionmessage = [];
         if (!$logindata->server) {
-            throw new Exception("Server field doesn't exist in login data file");
+            $exceptionmessage[] = "Server field doesn't exist in login data file";
         }
         if (!$logindata->user) {
-            throw new Exception("User field doesn't exist in login data file");
+            $exceptionmessage[] = "User field doesn't exist in login data file";
         }
         if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $logindata->user)) {
-            throw new Exception("User format is not correct in login data file");
+            $exceptionmessage[] = "User format is not correct in login data file";
         }
         if (!$logindata->password) {
-            throw new Exception("Password field doesn't exist in login data file");
+            $exceptionmessage[] = "Password field doesn't exist in login data file";
         }
         if (!preg_match("/^[a-zA-Z\d\s]{1,14}$/", $logindata->password)) {
-            throw new Exception("Password format is not correct in login data file");
+            $exceptionmessage[] = "Password format is not correct in login data file";
         }
-        if (!$logindata->database) { //TODO - SUGGESTION: You still get a single error per execution, why not store all errores on an array an the throw a single Exception?
-            throw new Exception("Database field doesn't exist in login data file");
+        if (!$logindata->database) {
+            $exceptionmessage[] = "Database field doesn't exist in login data file";
+        }
+        if(count($exceptionmessage) > 0){
+            $exceptionmessage = implode(",\n", $exceptionmessage);
+            throw new Exception($exceptionmessage);
         }
         $this->server = $logindata->server;
         $this->user = $logindata->user;
