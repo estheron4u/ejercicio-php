@@ -20,9 +20,9 @@ class DatabaseLoginLoader
      */
     public function loadLoginData()
     {
-        $logindata = new DatabaseLoginLoaderFactory(); //TODO - BAD PRACTICE: these 3 line suse the same variable, even if each one return a different type of variable (a factory, a service, and the loginData itself)
-        $logindata = $logindata->getLoginLoaderService($this->serviceType);
-        $logindata = $logindata->getLoginData();
+        $loginloader = new DatabaseLoginLoaderFactory();
+        $loginservice = $loginloader->getLoginLoaderService($this->serviceType);
+        $logindata = $loginservice->getLoginData();
         if (!$logindata->server) {
             throw new Exception("Server field doesn't exist in login data file");
         }
