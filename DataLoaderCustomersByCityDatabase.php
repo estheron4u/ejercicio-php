@@ -1,5 +1,7 @@
 <?php
 
+include_once('DataLoaderInterface.php');
+
 class DataLoaderCustomersByCityDatabase implements DataLoaderInterface
 {
     private const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers WHERE city = ?";

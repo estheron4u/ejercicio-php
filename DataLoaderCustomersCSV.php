@@ -1,5 +1,7 @@
 <?php
 
+include_once('DataLoaderInterface.php');
+
 class DataLoaderCustomersCSV implements DataLoaderInterface
 {
     public function getCustomerNames(): array

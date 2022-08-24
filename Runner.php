@@ -4,9 +4,7 @@ include_once('DatabaseLoginLoader.php');
 include_once('DatabaseConnector.php');
 include_once('DatabaseDataPrinter.php');
 include_once('TerminalReader.php');
-include_once('DataLoaderCustomersDatabase.php');
-include_once('DataLoaderCustomersByCityDatabase.php');
-include_once('DataLoaderCustomersCSV.php');
+include_once('DataLoaderFactory.php');
 
 class Runner
 {
@@ -37,8 +35,9 @@ class Runner
     {
         $connector = $this->getConnector('xml');
         $connection = $connector->getDatabaseConnection();
-        $customerNames = new DataLoaderCustomersDatabase($connection);
-        $customerNames = $customerNames->getCustomerNames();
+        $dataloader = new DataLoaderFactory();
+        $dataloader = $dataloader->getLoaderService('CustomersDatabase', $connection);
+        $customerNames = $dataloader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
@@ -55,8 +54,9 @@ class Runner
         $input = new TerminalReader();
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
-        $customerNames = new DataLoaderCustomersByCityDatabase($connection, $city);
-        $customerNames = $customerNames->getCustomerNames();
+        $dataloader = new DataLoaderFactory();
+        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase', $connection, $city);
+        $customerNames = $dataloader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
@@ -67,8 +67,9 @@ class Runner
      */
     public function runCustomersCsv()
     {
-        $customerNames = new DataLoaderCustomersCSV();
-        $customerNames = $customerNames->getCustomerNames();
+        $dataloader = new DataLoaderFactory();
+        $dataloader = $dataloader->getLoaderService('CustomersCSV');
+        $customerNames = $dataloader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
