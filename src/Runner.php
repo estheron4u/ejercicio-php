@@ -86,13 +86,13 @@ class Runner
     public function runCustomersPersonalized()
     {
         $input = new TerminalReader();
+        $dataloader = new DataLoaderFactory();
+
         $databasetype = $input->readTerminal('Type desired database type (MySQL or CSV): ');
         if ($databasetype === 'MySQL') {
             $connectortype = $input->readTerminal('Type desired connector type (json or xml): ');
             $connector = $this->getConnector($connectortype);
             $connection = $connector->getDatabaseConnection();
-
-            $dataloader = new DataLoaderFactory();
 
             $filtering = $input->readTerminal('Filter customers by city? (Yes/No): ');
 
@@ -100,18 +100,17 @@ class Runner
                 $input = new TerminalReader();
                 $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
                 $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase');
-                $dataloader->setConnection($connection);
                 $dataloader->setCity($city);
             } else {
                 $dataloader = $dataloader->getLoaderService('CustomersDatabase');
-                $dataloader->setConnection($connection);
             }
-            $customerNames = $dataloader->getCustomerNames();
+
+            $dataloader->setConnection($connection);
         } else {
             $dataloader = new DataLoaderFactory();
             $dataloader = $dataloader->getLoaderService('CustomersCSV');
-            $customerNames = $dataloader->getCustomerNames();
         }
+        $customerNames = $dataloader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
