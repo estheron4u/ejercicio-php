@@ -38,7 +38,8 @@ class Runner
         $connector = $this->getConnector('xml');
         $connection = $connector->getDatabaseConnection();
         $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersDatabase', $connection);
+        $dataloader = $dataloader->getLoaderService('CustomersDatabase');
+        $dataloader->setConnection($connection);
         $customerNames = $dataloader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
@@ -57,7 +58,9 @@ class Runner
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
         $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase', $connection, $city);
+        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase');
+        $dataloader->setConnection($connection);
+        $dataloader->setCity($city);
         $customerNames = $dataloader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();

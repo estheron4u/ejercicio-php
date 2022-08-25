@@ -7,7 +7,7 @@ class DataLoaderCustomersDatabase implements DataLoaderInterface
     private const CUSTOMER_NAMES_QUERY = "SELECT customerName FROM customers";
     private $connection;
 
-    public function __construct($connection)
+    public function setConnection($connection)
     {
         $this->connection = $connection;
     }

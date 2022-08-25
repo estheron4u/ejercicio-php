@@ -11,18 +11,20 @@ class DataLoaderFactory
     public const CustomersByCityDatabase = 'CustomersByCityDatabase';
 
     /**
+     * @param string $serviceType
+     * @return DataLoaderCustomersByCityDatabase|DataLoaderCustomersCSV|DataLoaderCustomersDatabase
      * @throws Exception
      */
-    public function getLoaderService(string $serviceType, $connection = null, $city = null): DataLoaderInterface
+    public function getLoaderService(string $serviceType)
     {
         if ($serviceType === self::CustomersCSV) {
             return new DataLoaderCustomersCSV();
         }
         if ($serviceType === self::CustomersDatabase) {
-            return new DataLoaderCustomersDatabase($connection);
+            return new DataLoaderCustomersDatabase();
         }
         if ($serviceType === self::CustomersByCityDatabase) {
-            return new DataLoaderCustomersByCityDatabase($connection, $city);
+            return new DataLoaderCustomersByCityDatabase();
         }
         throw new Exception('Service non-existent');
     }
