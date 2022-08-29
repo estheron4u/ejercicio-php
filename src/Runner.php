@@ -33,14 +33,37 @@ class Runner
     /**
      * @throws Exception
      */
+    private function getDatabaseCustomers($connection): array
+    {
+        $dataloader = new DataLoaderFactory();
+        $dataloader = $dataloader->getLoaderService('CustomersDatabase');
+        $dataloader->setConnection($connection);
+        return $dataloader->getCustomerNames();
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getDatabaseCustomersByCity($connection): array
+    {
+        $input = new TerminalReader();
+        $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
+
+        $dataloader = new DataLoaderFactory();
+        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase');
+        $dataloader->setConnection($connection);
+        $dataloader->setCity($city);
+        return $dataloader->getCustomerNames();
+    }
+
+    /**
+     * @throws Exception
+     */
     public function runCustomers()
     {
         $connector = $this->getConnector('xml');
         $connection = $connector->getDatabaseConnection();
-        $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersDatabase');
-        $dataloader->setConnection($connection);
-        $customerNames = $dataloader->getCustomerNames();
+        $customerNames = $this->getDatabaseCustomers($connection);
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
@@ -54,14 +77,7 @@ class Runner
         $connector = $this->getConnector('json');
         $connection = $connector->getDatabaseConnection();
 
-        $input = new TerminalReader();
-        $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
-
-        $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase');
-        $dataloader->setConnection($connection);
-        $dataloader->setCity($city);
-        $customerNames = $dataloader->getCustomerNames();
+        $customerNames = $this->getDatabaseCustomersByCity($connection);
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
@@ -86,33 +102,27 @@ class Runner
     public function runCustomersPersonalized()
     {
         $input = new TerminalReader();
-        $dataloader = new DataLoaderFactory();
 
-        $databasetype = $input->readTerminal('Type desired database type (MySQL or CSV): ');
-        if ($databasetype === 'MySQL') {
-            $connectortype = $input->readTerminal('Type desired connector type (json or xml): ');
+        $databasetype = strtolower($input->readTerminal('Type desired database type (MySQL or CSV): '));
+        if ($databasetype === 'mysql') {
+            $connectortype = strtolower($input->readTerminal('Type desired connector type (json or xml): '));
             $connector = $this->getConnector($connectortype);
             $connection = $connector->getDatabaseConnection();
 
-            $filtering = $input->readTerminal('Filter customers by city? (Yes/No): ');
+            $filtering = strtolower($input->readTerminal('Filter customers by city? (Yes/No): '));
 
-            if ($filtering === 'Yes') {
-                $input = new TerminalReader();
-                $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
-                $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase');
-                $dataloader->setCity($city);
+            if ($filtering === 'yes') {
+                $customerNames = $this->getDatabaseCustomersByCity($connection);
             } else {
-                $dataloader = $dataloader->getLoaderService('CustomersDatabase');
+                $customerNames = $this->getDatabaseCustomers($connection);
             }
 
-            $dataloader->setConnection($connection);
+            $customers = new DatabaseDataPrinter();
+            $customers->printCustomerNames($customerNames);
+        } elseif ($databasetype === 'csv'){
+            $this->runCustomersCsv();
         } else {
-            $dataloader = new DataLoaderFactory();
-            $dataloader = $dataloader->getLoaderService('CustomersCSV');
+            throw new Exception('Invalid database type');
         }
-        $customerNames = $dataloader->getCustomerNames();
-
-        $customers = new DatabaseDataPrinter();
-        $customers->printCustomerNames($customerNames);
     }
 }
