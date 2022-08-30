@@ -36,7 +36,7 @@ class Runner
     private function getDatabaseCustomers($connection): array
     {
         $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersDatabase');
+        $dataloader = $dataloader->getLoaderService('CustomersDatabase'); //FIXME you have a constant for this, remember?
         $dataloader->setConnection($connection);
         return $dataloader->getCustomerNames();
     }
@@ -50,7 +50,7 @@ class Runner
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
         $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase');
+        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase'); //FIXME you have a constant for this, remember?
         $dataloader->setConnection($connection);
         $dataloader->setCity($city);
         return $dataloader->getCustomerNames();
@@ -59,9 +59,9 @@ class Runner
     /**
      * @throws Exception
      */
-    public function runCustomers()
+    public function runCustomers() //TODO did you know that you can also declare 'void' return types? Applies to the next funtions aswell
     {
-        $connector = $this->getConnector('xml');
+        $connector = $this->getConnector('xml'); //FIXME you have a constant for this, remember?
         $connection = $connector->getDatabaseConnection();
         $customerNames = $this->getDatabaseCustomers($connection);
 
@@ -74,7 +74,7 @@ class Runner
      */
     public function runCustomersByCity()
     {
-        $connector = $this->getConnector('json');
+        $connector = $this->getConnector('json'); //FIXME you have a constant for this, remember?
         $connection = $connector->getDatabaseConnection();
 
         $customerNames = $this->getDatabaseCustomersByCity($connection);
@@ -89,7 +89,7 @@ class Runner
     public function runCustomersCsv()
     {
         $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersCSV');
+        $dataloader = $dataloader->getLoaderService('CustomersCSV'); //FIXME you have a constant for this, remember?
         $customerNames = $dataloader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
@@ -103,9 +103,9 @@ class Runner
     {
         $input = new TerminalReader();
 
-        $databasetype = strtolower($input->readTerminal('Type desired database type (MySQL or CSV): '));
-        if ($databasetype === 'mysql') {
-            $connectortype = strtolower($input->readTerminal('Type desired connector type (json or xml): '));
+        $databasetype = strtolower($input->readTerminal('Type desired database type (MySQL or CSV): ')); // TODO use camelCase: $databaseType
+        if ($databasetype === 'mysql') { // FIXME magic string
+            $connectortype = strtolower($input->readTerminal('Type desired connector type (json or xml): ')); // TODO use camelCase
             $connector = $this->getConnector($connectortype);
             $connection = $connector->getDatabaseConnection();
 
@@ -113,16 +113,16 @@ class Runner
 
             if ($filtering === 'yes') {
                 $customerNames = $this->getDatabaseCustomersByCity($connection);
-            } else {
+            } else {  // TODO so... 'potato' also means 'no'?
                 $customerNames = $this->getDatabaseCustomers($connection);
             }
 
             $customers = new DatabaseDataPrinter();
             $customers->printCustomerNames($customerNames);
-        } elseif ($databasetype === 'csv'){
+        } elseif ($databasetype === 'csv'){ //FIXME PSR!
             $this->runCustomersCsv();
-        } else {
-            throw new Exception('Invalid database type');
+        } else {  //TODO this if / elseif / else would be clearer with a 'switch' statement
+            throw new Exception('Invalid database type'); // TODO what if I make a typo? should it ask again instead of quitting
         }
     }
 }
