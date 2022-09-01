@@ -18,11 +18,11 @@ class Runner
     private function getConnector($serviceType): DatabaseConnector
     {
         if ($this->connector === null) {
-            $logindata = new DatabaseLoginLoader($serviceType);
-            $server = $logindata->getServer();
-            $username = $logindata->getUsername();
-            $password = $logindata->getPassword();
-            $database = $logindata->getDatabase();
+            $loginData = new DatabaseLoginLoader($serviceType);
+            $server = $loginData->getServer();
+            $username = $loginData->getUsername();
+            $password = $loginData->getPassword();
+            $database = $loginData->getDatabase();
 
             $this->connector = new DatabaseConnector($server, $username, $password, $database);
         }
@@ -35,10 +35,10 @@ class Runner
      */
     private function getDatabaseCustomers($connection): array
     {
-        $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersDatabase'); //FIXME you have a constant for this, remember?
-        $dataloader->setConnection($connection);
-        return $dataloader->getCustomerNames();
+        $dataLoader = new DataLoaderFactory();
+        $dataLoader = $dataLoader->getLoaderService('CustomersDatabase'); //FIXME you have a constant for this, remember?
+        $dataLoader->setConnection($connection);
+        return $dataLoader->getCustomerNames();
     }
 
     /**
@@ -49,11 +49,11 @@ class Runner
         $input = new TerminalReader();
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
-        $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersByCityDatabase'); //FIXME you have a constant for this, remember?
-        $dataloader->setConnection($connection);
-        $dataloader->setCity($city);
-        return $dataloader->getCustomerNames();
+        $dataLoader = new DataLoaderFactory();
+        $dataLoader = $dataLoader->getLoaderService('CustomersByCityDatabase'); //FIXME you have a constant for this, remember?
+        $dataLoader->setConnection($connection);
+        $dataLoader->setCity($city);
+        return $dataLoader->getCustomerNames();
     }
 
     /**
@@ -88,9 +88,9 @@ class Runner
      */
     public function runCustomersCsv()
     {
-        $dataloader = new DataLoaderFactory();
-        $dataloader = $dataloader->getLoaderService('CustomersCSV'); //FIXME you have a constant for this, remember?
-        $customerNames = $dataloader->getCustomerNames();
+        $dataLoader = new DataLoaderFactory();
+        $dataLoader = $dataLoader->getLoaderService('CustomersCSV'); //FIXME you have a constant for this, remember?
+        $customerNames = $dataLoader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
@@ -103,10 +103,10 @@ class Runner
     {
         $input = new TerminalReader();
 
-        $databasetype = strtolower($input->readTerminal('Type desired database type (MySQL or CSV): ')); // TODO use camelCase: $databaseType
-        if ($databasetype === 'mysql') { // FIXME magic string
-            $connectortype = strtolower($input->readTerminal('Type desired connector type (json or xml): ')); // TODO use camelCase
-            $connector = $this->getConnector($connectortype);
+        $databaseType = strtolower($input->readTerminal('Type desired database type (MySQL or CSV): '));
+        if ($databaseType === 'mysql') { // FIXME magic string
+            $connectorType = strtolower($input->readTerminal('Type desired connector type (json or xml): '));
+            $connector = $this->getConnector($connectorType);
             $connection = $connector->getDatabaseConnection();
 
             $filtering = strtolower($input->readTerminal('Filter customers by city? (Yes/No): '));
@@ -119,7 +119,7 @@ class Runner
 
             $customers = new DatabaseDataPrinter();
             $customers->printCustomerNames($customerNames);
-        } elseif ($databasetype === 'csv'){ //FIXME PSR!
+        } elseif ($databaseType === 'csv'){ //FIXME PSR!
             $this->runCustomersCsv();
         } else {  //TODO this if / elseif / else would be clearer with a 'switch' statement
             throw new Exception('Invalid database type'); // TODO what if I make a typo? should it ask again instead of quitting

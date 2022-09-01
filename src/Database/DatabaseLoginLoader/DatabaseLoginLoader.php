@@ -22,36 +22,36 @@ class DatabaseLoginLoader
      */
     public function loadLoginData()
     {
-        $loginloader = new DatabaseLoginLoaderFactory();
-        $loginservice = $loginloader->getLoginLoaderService($this->serviceType);
-        $logindata = $loginservice->getLoginData();
-        $exceptionmessage = [];
-        if (!$logindata->server) {
-            $exceptionmessage[] = "Server field doesn't exist in login data file";
+        $loginLoader = new DatabaseLoginLoaderFactory();
+        $loginService = $loginLoader->getLoginLoaderService($this->serviceType);
+        $loginData = $loginService->getLoginData();
+        $exceptionMessage = [];
+        if (!$loginData->server) {
+            $exceptionMessage[] = "Server field doesn't exist in login data file";
         }
-        if (!$logindata->user) {
-            $exceptionmessage[] = "User field doesn't exist in login data file";
+        if (!$loginData->user) {
+            $exceptionMessage[] = "User field doesn't exist in login data file";
         }
-        if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $logindata->user)) {
-            $exceptionmessage[] = "User format is not correct in login data file";
+        if (!preg_match("/^[a-zA-Z\d]\w{1,14}$/", $loginData->user)) {
+            $exceptionMessage[] = "User format is not correct in login data file";
         }
-        if (!$logindata->password) {
-            $exceptionmessage[] = "Password field doesn't exist in login data file";
+        if (!$loginData->password) {
+            $exceptionMessage[] = "Password field doesn't exist in login data file";
         }
-        if (!preg_match("/^[a-zA-Z\d\s]{1,14}$/", $logindata->password)) {
-            $exceptionmessage[] = "Password format is not correct in login data file";
+        if (!preg_match("/^[a-zA-Z\d\s]{1,14}$/", $loginData->password)) {
+            $exceptionMessage[] = "Password format is not correct in login data file";
         }
-        if (!$logindata->database) {
-            $exceptionmessage[] = "Database field doesn't exist in login data file";
+        if (!$loginData->database) {
+            $exceptionMessage[] = "Database field doesn't exist in login data file";
         }
-        if (count($exceptionmessage) > 0) {
-            $exceptionmessage = implode(",\n", $exceptionmessage);
-            throw new Exception($exceptionmessage);
+        if (count($exceptionMessage) > 0) {
+            $exceptionMessage = implode(",\n", $exceptionMessage);
+            throw new Exception($exceptionMessage);
         }
-        $this->server = $logindata->server;
-        $this->user = $logindata->user;
-        $this->password = $logindata->password;
-        $this->database = $logindata->database;
+        $this->server = $loginData->server;
+        $this->user = $loginData->user;
+        $this->password = $loginData->password;
+        $this->database = $loginData->database;
     }
 
     /**
