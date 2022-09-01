@@ -36,7 +36,7 @@ class Runner
     private function getDatabaseCustomers($connection): array
     {
         $dataLoader = new DataLoaderFactory();
-        $dataLoader = $dataLoader->getLoaderService('CustomersDatabase'); //FIXME you have a constant for this, remember?
+        $dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersDatabase);
         $dataLoader->setConnection($connection);
         return $dataLoader->getCustomerNames();
     }
@@ -50,7 +50,7 @@ class Runner
         $city = $input->readTerminal('Insert name of the city you want to view customers from: ');
 
         $dataLoader = new DataLoaderFactory();
-        $dataLoader = $dataLoader->getLoaderService('CustomersByCityDatabase'); //FIXME you have a constant for this, remember?
+        $dataLoader = $dataLoader->getLoaderService( $dataLoader::CustomersByCityDatabase);
         $dataLoader->setConnection($connection);
         $dataLoader->setCity($city);
         return $dataLoader->getCustomerNames();
@@ -61,7 +61,7 @@ class Runner
      */
     public function runCustomers() //TODO did you know that you can also declare 'void' return types? Applies to the next funtions aswell
     {
-        $connector = $this->getConnector('xml'); //FIXME you have a constant for this, remember?
+        $connector = $this->getConnector(\DatabaseLoginLoader\DatabaseLoginLoaderFactory::XML);
         $connection = $connector->getDatabaseConnection();
         $customerNames = $this->getDatabaseCustomers($connection);
 
@@ -74,7 +74,7 @@ class Runner
      */
     public function runCustomersByCity()
     {
-        $connector = $this->getConnector('json'); //FIXME you have a constant for this, remember?
+        $connector = $this->getConnector(\DatabaseLoginLoader\DatabaseLoginLoaderFactory::JSON);
         $connection = $connector->getDatabaseConnection();
 
         $customerNames = $this->getDatabaseCustomersByCity($connection);
@@ -89,7 +89,7 @@ class Runner
     public function runCustomersCsv()
     {
         $dataLoader = new DataLoaderFactory();
-        $dataLoader = $dataLoader->getLoaderService('CustomersCSV'); //FIXME you have a constant for this, remember?
+        $dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersCSV);
         $customerNames = $dataLoader->getCustomerNames();
 
         $customers = new DatabaseDataPrinter();
