@@ -20,7 +20,7 @@ class DatabaseLoginLoader
     /**
      * @throws Exception
      */
-    public function loadLoginData()
+    public function loadLoginData(): void
     {
         $loginLoader = new DatabaseLoginLoaderFactory();
         $loginService = $loginLoader->getLoginLoaderService($this->serviceType);

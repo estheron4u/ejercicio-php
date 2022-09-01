@@ -59,7 +59,7 @@ class Runner
     /**
      * @throws Exception
      */
-    public function runCustomers() //TODO did you know that you can also declare 'void' return types? Applies to the next funtions aswell
+    public function runCustomers(): void
     {
         $connector = $this->getConnector(\DatabaseLoginLoader\DatabaseLoginLoaderFactory::XML);
         $connection = $connector->getDatabaseConnection();
@@ -72,7 +72,7 @@ class Runner
     /**
      * @throws Exception
      */
-    public function runCustomersByCity()
+    public function runCustomersByCity(): void
     {
         $connector = $this->getConnector(\DatabaseLoginLoader\DatabaseLoginLoaderFactory::JSON);
         $connection = $connector->getDatabaseConnection();
@@ -86,7 +86,7 @@ class Runner
     /**
      * @throws Exception
      */
-    public function runCustomersCsv()
+    public function runCustomersCsv(): void
     {
         $dataLoader = new DataLoaderFactory();
         $dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersCSV);
@@ -99,7 +99,7 @@ class Runner
     /**
      * @throws Exception
      */
-    public function runCustomersPersonalized()
+    public function runCustomersPersonalized(): void
     {
         $input = new TerminalReader();
 
