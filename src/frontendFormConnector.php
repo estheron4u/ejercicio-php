@@ -1,10 +1,9 @@
 <?php
 
-include_once('DataLoader/DataLoaderFactory.php');
-include_once('FrontendDataPrinter.php');
+include_once('Runner.php');
 
 session_start();
-if (isset($_POST['next'])) {
+if (isset($_POST['submitType'])) {
     $_SESSION['type'] = $_POST['type'];
 }
 
@@ -14,7 +13,12 @@ if ($_POST['type'] === 'mysql') {
 <!DOCTYPE html>
 <html>
 <body>
-<form action="frontendFormFilter.php" method="post">
+<form action="frontendFormFilter.php" method="post" style="
+      display: flex;
+      flex-direction: column;
+      max-width: 200px;
+      row-gap: 8px;
+">
     <label for="connector">Desired connector type: </label>
     <select name="connector">
         <option value="json">json</option>
@@ -25,26 +29,17 @@ if ($_POST['type'] === 'mysql') {
         <option value="yes">Yes</option>
         <option value="no">No</option>
     </select>
-    <input type="submit" name="next1" value="Next"/>
+    <input type="submit" name="submitConnector" value="Next"/>
 </form>
 
 <?php
 } elseif ($_POST['type'] === 'csv') {
-$dataLoader = new DataLoaderFactory();
-$dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersCSV);
-$customerNames = $dataLoader->getCustomerNames();
-
-$customers = new FrontendDataPrinter();
-?>
-<html>
-<body>
-<h1>Customers:</h1>
-<ul>
-    <?php
-    $customers->printCustomerNames($customerNames);
-    ?>
-</ul>
-<?php
+    $customers = new Runner();
+    try {
+        $customers->runCustomersCsvFrontend();
+    } catch (Exception $e) {
+        echo 'Exception: ', $e->getMessage();
+    }
 }
 ?>
 <h2>Here is what you have entered:</h2>

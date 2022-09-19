@@ -7,6 +7,7 @@ include_once('Database/DatabaseConnector.php');
 include_once('Database/DatabaseDataPrinter.php');
 include_once('TerminalReader.php');
 include_once('DataLoader/DataLoaderFactory.php');
+include_once('FrontendDataPrinter.php');
 
 class Runner
 {
@@ -55,6 +56,19 @@ class Runner
         $dataLoader->setCity($city);
         return $dataLoader->getCustomerNames();
     }
+    /**
+     * @throws Exception
+     */
+    private function getDatabaseCustomersByCityFrontend($connection): array
+    {
+        $city = $_SESSION['city'];
+
+        $dataLoader = new DataLoaderFactory();
+        $dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersByCityDatabase);
+        $dataLoader->setConnection($connection);
+        $dataLoader->setCity($city);
+        return $dataLoader->getCustomerNames();
+    }
 
     /**
      * @throws Exception
@@ -67,6 +81,28 @@ class Runner
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
+    }
+    /**
+     * @throws Exception
+     */
+    public function runCustomersFrontend(): void
+    {
+        $connector = $this->getConnector($_SESSION['connector']);
+        $connection = $connector->getDatabaseConnection();
+        $customerNames = $this->getDatabaseCustomers($connection);
+
+        $customers = new FrontendDataPrinter();
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <body>
+        <h1>Customers:</h1>
+        <ul>
+            <?php
+            $customers->printCustomerNames($customerNames);
+            ?>
+        </ul>
+        <?php
     }
 
     /**
@@ -82,6 +118,30 @@ class Runner
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
     }
+    /**
+     * @throws Exception
+     */
+    public function runCustomersByCityFrontend(): void
+    {
+        $connector = $this->getConnector($_SESSION['connector']);
+        $connection = $connector->getDatabaseConnection();
+
+        $customerNames = $this->getDatabaseCustomersByCityFrontend($connection);
+
+        $customers = new FrontendDataPrinter();
+    ?>
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <h1>Customers from: <?php
+                echo $_SESSION['city']; ?></h1>
+            <ul>
+                <?php
+                $customers->printCustomerNames($customerNames);
+                ?>
+            </ul>
+    <?php
+    }
 
     /**
      * @throws Exception
@@ -94,6 +154,28 @@ class Runner
 
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function runCustomersCsvFrontend(): void
+    {
+        $dataLoader = new DataLoaderFactory();
+        $dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersCSV);
+        $customerNames = $dataLoader->getCustomerNames();
+
+        $customers = new FrontendDataPrinter();
+        ?>
+        <html>
+            <body>
+                <h1>Customers:</h1>
+                <ul>
+                    <?php
+                    $customers->printCustomerNames($customerNames);
+                    ?>
+                </ul>
+        <?php
     }
 
     /**

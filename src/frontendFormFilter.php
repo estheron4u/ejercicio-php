@@ -1,14 +1,9 @@
 <?php
 
-use DatabaseLoginLoader\DatabaseLoginLoader;
-
-include_once('Database/DatabaseLoginLoader/DatabaseLoginLoader.php');
-include_once('Database/DatabaseConnector.php');
-include_once('DataLoader/DataLoaderFactory.php');
-include_once('FrontendDataPrinter.php');
+include_once('Runner.php');
 
 session_start();
-if (isset($_POST['next1'])) {
+if (isset($_POST['submitConnector'])) {
     $_SESSION['connector'] = $_POST['connector'];
     $_SESSION['filter'] = $_POST['filter'];
 }
@@ -18,66 +13,24 @@ if ($_POST['filter'] === 'yes') {
 <!DOCTYPE html>
 <html>
 <body>
-<form action="frontendFormCity.php" method="post">
+<form action="frontendFormCity.php" method="post" style="
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    row-gap: 8px;
+">
     <label for="city">Name of the city you want to filter by: </label>
     <input type="text" name="city">
-    <input type="submit" name="next2" value="Next"/>
+    <input type="submit" name="submitCity" value="Next"/>
 </form>
 <?php
-} elseif ($_POST['connector'] === 'xml') {
-$loginData = new DatabaseLoginLoader(\DatabaseLoginLoader\DatabaseLoginLoaderFactory::XML);
-$server = $loginData->getServer();
-$username = $loginData->getUsername();
-$password = $loginData->getPassword();
-$database = $loginData->getDatabase();
-
-$connector = new DatabaseConnector($server, $username, $password, $database);
-$connection = $connector->getDatabaseConnection();
-
-$dataLoader = new DataLoaderFactory();
-$dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersDatabase);
-$dataLoader->setConnection($connection);
-$customerNames = $dataLoader->getCustomerNames();
-
-$customers = new FrontendDataPrinter();
-?>
-<!DOCTYPE html>
-<html>
-<body>
-<h1>Customers:</h1>
-<ul>
-    <?php
-    $customers->printCustomerNames($customerNames);
-    ?>
-</ul>
-<?php
-} elseif ($_POST['connector'] === 'json') {
-$loginData = new DatabaseLoginLoader(\DatabaseLoginLoader\DatabaseLoginLoaderFactory::JSON);
-$server = $loginData->getServer();
-$username = $loginData->getUsername();
-$password = $loginData->getPassword();
-$database = $loginData->getDatabase();
-
-$connector = new DatabaseConnector($server, $username, $password, $database);
-$connection = $connector->getDatabaseConnection();
-
-$dataLoader = new DataLoaderFactory();
-$dataLoader = $dataLoader->getLoaderService($dataLoader::CustomersDatabase);
-$dataLoader->setConnection($connection);
-$customerNames = $dataLoader->getCustomerNames();
-
-$customers = new FrontendDataPrinter();
-?>
-<!DOCTYPE html>
-<html>
-<body>
-<h1>Customers:</h1>
-<ul>
-    <?php
-    $customers->printCustomerNames($customerNames);
-    ?>
-</ul>
-<?php
+} else {
+    $customers = new Runner();
+    try {
+        $customers->runCustomersFrontend();
+    } catch (Exception $e) {
+        echo 'Exception: ', $e->getMessage();
+    }
 }
 ?>
 
