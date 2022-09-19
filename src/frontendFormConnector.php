@@ -3,11 +3,15 @@
 include_once('Runner.php');
 
 session_start();
+
+const MYSQL = 'mysql';
+const CSV = 'csv';
+
 if (isset($_POST['submitType'])) {
     $_SESSION['type'] = $_POST['type'];
 }
 
-if ($_POST['type'] === 'mysql') {
+if ($_POST['type'] === MYSQL) {
 ?>
 
 <!DOCTYPE html>
@@ -33,13 +37,22 @@ if ($_POST['type'] === 'mysql') {
 </form>
 
 <?php
-} elseif ($_POST['type'] === 'csv') {
+} elseif ($_POST['type'] === CSV) {
     $customers = new Runner();
     try {
         $customers->runCustomersCsvFrontend();
     } catch (Exception $e) {
         echo 'Exception: ', $e->getMessage();
     }
+} else {
+?>
+
+<!DOCTYPE html>
+<html>
+<body>
+<p>Invalid database type, please try again.</p>
+
+<?php
 }
 ?>
 <h2>Here is what you have entered:</h2>

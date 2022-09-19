@@ -3,12 +3,26 @@
 include_once('Runner.php');
 
 session_start();
+
+const YES = 'yes';
+const NO = 'no';
+const JSON = 'json';
+const XML = 'xml';
+
 if (isset($_POST['submitConnector'])) {
     $_SESSION['connector'] = $_POST['connector'];
     $_SESSION['filter'] = $_POST['filter'];
 }
 
-if ($_POST['filter'] === 'yes') {
+if ($_POST['connector'] !== JSON AND $_POST['connector'] !== XML) {
+?>
+<!DOCTYPE html>
+<html>
+<body>
+<p>Invalid connector type, please try again.</p>
+
+<?php
+} elseif ($_POST['filter'] === YES) {
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,13 +38,21 @@ if ($_POST['filter'] === 'yes') {
     <input type="submit" name="submitCity" value="Next"/>
 </form>
 <?php
-} else {
+} elseif ($_POST['filter'] === NO) {
     $customers = new Runner();
     try {
         $customers->runCustomersFrontend();
     } catch (Exception $e) {
         echo 'Exception: ', $e->getMessage();
     }
+} else  {
+?>
+<!DOCTYPE html>
+<html>
+<body>
+<p>Invalid filter answer, please try again.</p>
+
+<?php
 }
 ?>
 
