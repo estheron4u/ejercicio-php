@@ -221,4 +221,12 @@ class Runner
             }
         }
     }
+
+    /**
+     * @throws Exception
+     */
+    public function runCustomersPersonalizedFrontend(): void
+    {
+        include('frontendFormType.php');
+    }
 }
