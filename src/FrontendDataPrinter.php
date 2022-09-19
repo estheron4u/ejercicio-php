@@ -19,7 +19,8 @@ class FrontendDataPrinter
             throw new Exception("Wrong column key, it must be 'customerName'");
         }
         foreach ($customerNames as $customer) { ?>
-            <li>Customer: <?php echo $customer['customerName'];?></li>
+            <li>Customer: <?php
+                echo $customer['customerName']; ?></li>
             <?php
         }
     }

@@ -14,7 +14,7 @@ if (isset($_POST['submitConnector'])) {
     $_SESSION['filter'] = $_POST['filter'];
 }
 
-if ($_POST['connector'] !== JSON AND $_POST['connector'] !== XML) {
+if ($_POST['connector'] !== JSON and $_POST['connector'] !== XML) {
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,7 +45,8 @@ if ($_POST['connector'] !== JSON AND $_POST['connector'] !== XML) {
     } catch (Exception $e) {
         echo 'Exception: ', $e->getMessage();
     }
-} else  {
+}
+else  {
 ?>
 <!DOCTYPE html>
 <html>

@@ -56,6 +56,7 @@ class Runner
         $dataLoader->setCity($city);
         return $dataLoader->getCustomerNames();
     }
+
     /**
      * @throws Exception
      */
@@ -82,6 +83,7 @@ class Runner
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
     }
+
     /**
      * @throws Exception
      */
@@ -118,30 +120,31 @@ class Runner
         $customers = new DatabaseDataPrinter();
         $customers->printCustomerNames($customerNames);
     }
+
     /**
      * @throws Exception
      */
-    public function runCustomersByCityFrontend(): void
-    {
-        $connector = $this->getConnector($_SESSION['connector']);
-        $connection = $connector->getDatabaseConnection();
+public function runCustomersByCityFrontend(): void
+{
+    $connector = $this->getConnector($_SESSION['connector']);
+    $connection = $connector->getDatabaseConnection();
 
-        $customerNames = $this->getDatabaseCustomersByCityFrontend($connection);
+    $customerNames = $this->getDatabaseCustomersByCityFrontend($connection);
 
-        $customers = new FrontendDataPrinter();
+    $customers = new FrontendDataPrinter();
     ?>
     <!DOCTYPE html>
-    <html>
-        <body>
-            <h1>Customers from: <?php
-                echo $_SESSION['city']; ?></h1>
-            <ul>
-                <?php
-                $customers->printCustomerNames($customerNames);
-                ?>
-            </ul>
+<html>
+<body>
+    <h1>Customers from: <?php
+        echo $_SESSION['city']; ?></h1>
+    <ul>
+        <?php
+        $customers->printCustomerNames($customerNames);
+        ?>
+    </ul>
     <?php
-    }
+}
 
     /**
      * @throws Exception
@@ -168,13 +171,13 @@ class Runner
         $customers = new FrontendDataPrinter();
         ?>
         <html>
-            <body>
-                <h1>Customers:</h1>
-                <ul>
-                    <?php
-                    $customers->printCustomerNames($customerNames);
-                    ?>
-                </ul>
+    <body>
+    <h1>Customers:</h1>
+    <ul>
+        <?php
+        $customers->printCustomerNames($customerNames);
+        ?>
+    </ul>
         <?php
     }
 

@@ -1,5 +1,6 @@
 <?php
-session_start ();
+
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +17,7 @@ session_start ();
         <option value="mysql">MySQL</option>
         <option value="csv">CSV</option>
     </select>
-    <input type="submit" name="submitType" value="Next" />
+    <input type="submit" name="submitType" value="Next"/>
 </form>
 </body>
 </html>

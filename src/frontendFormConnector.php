@@ -44,7 +44,8 @@ if ($_POST['type'] === MYSQL) {
     } catch (Exception $e) {
         echo 'Exception: ', $e->getMessage();
     }
-} else {
+}
+else {
 ?>
 
 <!DOCTYPE html>
